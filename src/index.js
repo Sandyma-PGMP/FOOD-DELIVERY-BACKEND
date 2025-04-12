@@ -61,6 +61,13 @@ app.use('/api/events',eventRoutes)
 const adminEventRoutes=require("./routes/adminEventRoutes.js")
 app.use("/api/admin/events",adminEventRoutes)
 
+const connectToDB = require("./config/db");
+//const { connectToDB } = require("./config/db");
 
+
+app.listen(PORT,async ()=>{
+    await connectToDB()
+    console.log("food ordering server running on port ",PORT)
+})
 
 module.exports={app};
