@@ -70,4 +70,4 @@ app.listen(PORT,async ()=>{
     console.log("food ordering server running on port ",PORT)
 })
 
-module.exports={app};
+
