@@ -9,6 +9,7 @@ module.exports = {
   async createOrder(order, user) {
     try {
       const address = order.deliveryAddress;
+      console.log("Address:",address)
       let savedAddress;
       if (address._id) {
         const isAddressExist = await Address.findById(address._id);
