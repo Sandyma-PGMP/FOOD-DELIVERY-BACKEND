@@ -9,7 +9,7 @@ module.exports = {
         const orderItem = await OrderItem.findById(itemId).populate('food');
         return {
           price_data: {
-            currency: 'usd',
+            currency: 'inr',
             unit_amount: Math.round(orderItem.totalPrice * 100),
             product_data: {
               name: orderItem.food.name,
