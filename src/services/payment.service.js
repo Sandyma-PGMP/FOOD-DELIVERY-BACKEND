@@ -26,8 +26,8 @@ module.exports = {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
-        success_url: `https://food-delivery-backend-9f2i.onrender.com/payment/success/${order._id}`,
-        cancel_url: 'https://food-delivery-backend-9f2i.onrender.com/cancel',
+        success_url: `https://food-delivery-frontend-te9b.vercel.app/payment/success/${order._id}`,
+        cancel_url: 'https://food-delivery-frontend-te9b.vercel.app/',
         line_items: lineItems,
       });
 
