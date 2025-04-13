@@ -19,6 +19,10 @@ module.exports = {
           const shippingAddress = new Address(address);
           savedAddress = await shippingAddress.save();
         }
+      }else {
+        // New address without _id
+        const shippingAddress = new Address(order.deliveryAddress);
+        savedAddress = await shippingAddress.save();
       }
 
       if (!user.addresses.includes(savedAddress._id)) {
