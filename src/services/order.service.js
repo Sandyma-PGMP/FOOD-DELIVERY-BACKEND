@@ -51,6 +51,14 @@ module.exports = {
 
       const totalPrice = await cartService.calculateCartTotals(cart);
 
+      console.log("Creating order with:", {
+        customer: user._id,
+        deliveryAddress: savedAddress._id,
+        totalAmount: totalPrice,
+        restaurant: restaurant._id,
+        items: orderItems
+      });
+
       const createdOrder = new Order({
         customer: user._id,
         deliveryAddress: savedAddress._id,
@@ -60,7 +68,14 @@ module.exports = {
         restaurant: restaurant._id,
         items: orderItems,
       });
+
+      console.log("About to save order:", createdOrder);
       const savedOrder = await createdOrder.save();
+      console.log("Saved order:", savedOrder);
+      if (!savedOrder || !savedOrder._id) {
+        console.error("Order not saved correctly:", savedOrder);
+        throw new Error("Order not saved correctly");
+      }
 
       restaurant.orders.push(savedOrder._id);
       await restaurant.save();
