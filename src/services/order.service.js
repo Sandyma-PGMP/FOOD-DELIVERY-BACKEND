@@ -16,7 +16,7 @@ module.exports = {
         if (isAddressExist) {
           savedAddress = isAddressExist;
         } else {
-          const shippingAddress = new Address(order.deliveryAddress);
+          const shippingAddress = new Address(address);
           savedAddress = await shippingAddress.save();
         }
       }
@@ -52,12 +52,12 @@ module.exports = {
       const totalPrice = await cartService.calculateCartTotals(cart);
 
       console.log("Creating order with:", {
-        customer: user._id,
-        deliveryAddress: savedAddress._id,
-        totalAmount: totalPrice,
-        restaurant: restaurant._id,
-        items: orderItems
-      });
+  customer: user._id,
+  deliveryAddress: savedAddress._id,
+  totalAmount: totalPrice,
+  restaurant: restaurant._id,
+  items: orderItems
+});
 
       const createdOrder = new Order({
         customer: user._id,

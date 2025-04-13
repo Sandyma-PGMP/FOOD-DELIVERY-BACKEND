@@ -7,6 +7,8 @@ module.exports = {
         try {
             const order  = req.body;
             const user = req.user;
+            console.log(order);
+            console.log(user);
             if (!order) throw new Error('Please provide valid request body');
             const paymentResponse = await orderService.createOrder(order, user);
             res.status(200).json(paymentResponse);
