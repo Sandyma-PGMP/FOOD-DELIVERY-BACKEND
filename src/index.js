@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-    origin: "https://food-delivery-frontend-tau.vercel.app",
+    origin: "https://food-delivery-frontend-te9b.vercel.app",
     methods: ["GET", "POST","PUT","DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
