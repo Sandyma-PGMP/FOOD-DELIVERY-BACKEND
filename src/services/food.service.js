@@ -80,13 +80,25 @@ module.exports = {
           { "foodCategory.name": { $regex: keyword, $options: "i" } },
         ];
       }
-
-      const foods = await Food.find(query);
+  
+      const foods = await Food.find(query).populate([
+        { path: "ingredients", populate: { path: "category", select: "name" } },
+        "foodCategory",
+        {
+          path: "restaurant",
+          select: "name address _id",
+          populate: {
+            path: "address",
+            select: "fullName streetAddress city state postalCode country"
+          }
+        }
+      ]);
       return foods;
     } catch (error) {
       throw new Error(`Failed to search for food: ${error.message}`);
     }
-  },
+  }
+  ,
 
   async updateAvailibilityStatus(foodId) {
     try {

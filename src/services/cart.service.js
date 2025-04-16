@@ -11,7 +11,7 @@ module.exports = {
 
   async findCartByUserId(userId) {
     let cart;
-
+  
     cart = await Cart.findOne({ customer: userId }).populate([
       {
         path: "items",
@@ -21,32 +21,32 @@ module.exports = {
         },
       },
     ]);
-
+  
     if (!cart) {
-      throw new Error("Cart not found u - ", userId);
+      throw new Error("Cart not found for user ID: " + userId);
     }
-
-    let cartItems = await CartItem.find({ cart: cart._id }).populate("food");
-
-
+  
+    // Ensure to handle cases where `food` may be null
+    cart.items = cart.items.filter(item => item.food !== null);
+  
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
     let totalItem = 0;
-
+  
     for (const item of cart.items) {
       totalPrice += item.price;
       totalDiscountedPrice += item.discountedPrice;
       totalItem += item.quantity;
     }
-
+  
     cart.totalPrice = totalPrice;
     cart.totalItem = totalItem;
     cart.totalDiscountedPrice = totalDiscountedPrice;
-    cart.discounte = totalPrice - totalDiscountedPrice;
-
-    // const updatedCart = await cart.save();
+    cart.discounted = totalPrice - totalDiscountedPrice;
+  
     return cart;
-  },
+  }
+  ,
 
   async addItemToCart(req, userId) {
     const cart = await Cart.findOne({ customer: userId });
