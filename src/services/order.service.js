@@ -121,14 +121,28 @@ module.exports = {
 
   async getUserOrders(userId) {
     try {
-      const orders = await Order.find({ customer: userId }).populate({
-        path: "items",populate:{path:"food"}
-      });
+      // Fetch orders for the given user ID
+      const orders = await Order.find({ customer: userId })
+        .populate({
+          path: 'items',
+          populate: {
+            path: 'food',
+            select: 'name price images'  // Only select specific fields from the food
+          },
+        });
+  
+      if (!orders || orders.length === 0) {
+        throw new Error('No orders found for this user');
+      }
+  
       return orders;
     } catch (error) {
+      // Log the error for debugging purposes
+      console.error(`Failed to get orders for user ${userId}:`, error);
       throw new Error(`Failed to get user orders: ${error.message}`);
     }
-  },
+  }
+  ,
 
   async getOrdersOfRestaurant(restaurantId, orderStatus) {
     try {
