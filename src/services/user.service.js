@@ -112,7 +112,6 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
 
-      console.log("user",user)
       await user.save();
     } catch (error) {
       throw new Error(`Error updating password: ${error.message}`);
@@ -139,7 +138,7 @@ module.exports = {
         },
       });
 
-      console.log(EMAIL,EMAIL_PASS)
+      
 
       await transporter.sendMail({
         from: EMAIL,

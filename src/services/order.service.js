@@ -1,5 +1,6 @@
 const Address = require("../models/adress.model");
 const Order = require("../models/order.model");
+const Food=require("../models/food.model")
 const OrderItem = require("../models/orderItem.model");
 const Restaurant = require("../models/restaurant.model");
 const cartService = require("./cart.service");
@@ -43,15 +44,19 @@ module.exports = {
       const orderItems = [];
 
       for (const cartItem of cart.items) {
+        const food = await Food.findById(cartItem.food);
+        if (!food) throw new Error(`Food item not found with ID: ${cartItem.food}`);
+      
         const orderItem = new OrderItem({
-          food: cartItem.food,
+          food: food._id,
           ingredients: cartItem.ingredients,
           quantity: cartItem.quantity,
-          totalPrice: cartItem.food.price * cartItem.quantity,
+          totalPrice: food.price * cartItem.quantity,
         });
         const savedOrderItem = await orderItem.save();
         orderItems.push(savedOrderItem._id);
       }
+      
 
       const totalPrice = await cartService.calculateCartTotals(cart);
 
@@ -130,6 +135,11 @@ module.exports = {
             select: 'name price images'  // Only select specific fields from the food
           },
         });
+        const order = await Order.findOne({ customer: userId })
+           .populate({ path: 'items', populate: { path: 'food' } });
+
+         console.log(JSON.stringify(order.items, null, 2));
+
   
       if (!orders || orders.length === 0) {
         throw new Error('No orders found for this user');

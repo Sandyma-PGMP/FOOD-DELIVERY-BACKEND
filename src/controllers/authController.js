@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const userService = require("../services/user.service.js");
+const user=require("../models/user.model.js")
 const jwtProvider = require("../config/jwtProvider.js");
 const passwordResetTokenService = require("../services/passwordResetToken.service.js");
 const cartService = require("../services/cart.service.js");
@@ -79,7 +80,9 @@ const resetPassword = async (req, res) => {
 
 const resetPasswordRequest = async (req, res) => {
   try {
-    const { email } = req.query;
+    const { email } = req.body;
+
+    console.log("email",email)
 
     const user = await userService.getUserByEmail(email);
 
